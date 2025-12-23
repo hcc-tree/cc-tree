@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <!-- 适配微信移动端 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微信圣诞树</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        /* 圣诞树容器 */
+        .christmas-tree {
+            position: relative;
+        }
+        /* 圣诞树主体（分层实现） */
+        .tree-layer {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 80px solid transparent;
+            border-right: 80px solid transparent;
+            border-bottom: 100px solid #228B22;
+            transform-origin: bottom center;
+        }
+        .layer1 {
+            bottom: 60px;
+            left: -80px;
+            animation: swing 3s ease-in-out infinite alternate;
+        }
+        .layer2 {
+            bottom: 120px;
+            left: -60px;
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+            border-bottom: 80px solid #32CD32;
+            animation: swing 3s ease-in-out 0.5s infinite alternate;
+        }
+        .layer3 {
+            bottom: 180px;
+            left: -40px;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-bottom: 60px solid #90EE90;
+            animation: swing 3s ease-in-out 1s infinite alternate;
+        }
+        /* 树干 */
+        .tree-trunk {
+            width: 30px;
+            height: 60px;
+            background-color: #8B4513;
+            position: absolute;
+            bottom: 0;
+            left: -15px;
+            border-radius: 5px;
+        }
+        /* 装饰球 */
+        .ornament {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            animation: blink 2s infinite alternate;
+        }
+        .ornament1 {
+            background-color: #FF0000;
+            top: 40px;
+            left: -30px;
+        }
+        .ornament2 {
+            background-color: #FFFF00;
+            top: 80px;
+            left: 20px;
+        }
+        .ornament3 {
+            background-color: #0000FF;
+            top: 120px;
+            left: -50px;
+        }
+        /* 星星 */
+        .star {
+            position: absolute;
+            top: -20px;
+            left: -25px;
+            width: 50px;
+            height: 50px;
+            background-color: #FFD700;
+            clip-path: polygon(
+                50% 0%,
+                61% 35%,
+                98% 35%,
+                68% 57%,
+                79% 91%,
+                50% 70%,
+                21% 91%,
+                32% 57%,
+                2% 35%,
+                39% 35%
+            );
+            animation: rotate 5s linear infinite, blink 1.5s infinite alternate;
+        }
+        /* 雪花效果 */
+        .snowflake {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: fall linear infinite;
+        }
+        /* 动画定义 */
+        @keyframes swing {
+            0% { transform: rotate(-5deg); }
+            100% { transform: rotate(5deg); }
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="christmas-tree">
+        <!-- 圣诞树分层 -->
+        <div class="tree-layer layer1"></div>
+        <div class="tree-layer layer2"></div>
+        <div class="tree-layer layer3"></div>
+        <!-- 树干 -->
+        <div class="tree-trunk"></div>
+        <!-- 装饰球 -->
+        <div class="ornament ornament1"></div>
+        <div class="ornament ornament2"></div>
+        <div class="ornament ornament3"></div>
+        <!-- 星星 -->
+        <div class="star"></div>
+    </div>
+
+    <script>
+        // 动态生成雪花
+        function createSnowflakes() {
+            const container = document.body;
+            const snowCount = 50; // 雪花数量
+
+            for (let i = 0; i < snowCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                
+                // 随机雪花大小
+                const size = Math.random() * 5 + 2;
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                
+                // 随机位置
+                snowflake.style.left = `${Math.random() * 100}vw`;
+                snowflake.style.top = `${Math.random() * -100}px`;
+                
+                // 随机下落速度
+                const duration = Math.random() * 10 + 5;
+                snowflake.style.animationDuration = `${duration}s`;
+                
+                // 随机延迟
+                snowflake.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(snowflake);
+            }
+        }
+
+        // 页面加载完成后生成雪花
+        window.onload = function() {
+            createSnowflakes();
+        };
+    </script>
+</body>
+</html>
